@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <aop:aspectj-autoproxy />
+    <bean id="team" class="main.Team"/>
+    <bean id="quiz" class="main.Quiz"/>
+    <bean id="cafe" class="main.Cafe"/>
+    <bean id="visitor" class="main.Visitor"/>
+    <aop:config>
+        <aop:aspect ref="cafe">
+            <aop:pointcut
+                    expression="execution(* main.Visitor.visitCafe())"
+                    id="visiting"/>
+            <aop:before
+                    method="prepareTable"
+                    pointcut-ref="visiting"/>
+            <aop:after-returning
+                    method="cleanTable"
+                    pointcut-ref="visiting"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
